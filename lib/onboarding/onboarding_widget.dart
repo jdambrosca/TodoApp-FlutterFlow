@@ -323,7 +323,7 @@ class _OnboardingWidgetState extends State<OnboardingWidget> {
                                         letterSpacing: 0.0,
                                         fontWeight: FontWeight.w500,
                                       ),
-                                  hintText: 'Street Address...',
+                                  hintText: 'Phone Number...',
                                   hintStyle: FlutterFlowTheme.of(context)
                                       .labelLarge
                                       .override(
@@ -386,7 +386,7 @@ class _OnboardingWidgetState extends State<OnboardingWidget> {
                                       fontFamily: 'Inter',
                                       letterSpacing: 0.0,
                                     ),
-                                keyboardType: TextInputType.streetAddress,
+                                keyboardType: TextInputType.phone,
                                 cursorColor:
                                     FlutterFlowTheme.of(context).primaryText,
                                 validator: _model.textController2Validator
@@ -487,6 +487,7 @@ class _OnboardingWidgetState extends State<OnboardingWidget> {
                       await currentUserReference!.update(createUsersRecordData(
                         displayName: _model.textController1.text,
                         birthday: _model.datePicked,
+                        phoneNumber: _model.textController2.text,
                       ));
 
                       context.goNamed('tasks');

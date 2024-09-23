@@ -819,8 +819,8 @@ class _LoginWidgetState extends State<LoginWidget>
                                   .doc(user.uid)
                                   .update(createUsersRecordData(
                                     email: valueOrDefault<String>(
-                                      _model.loginhereTextController.text,
-                                      'example@gmail.com',
+                                      _model.signupEmailTextController.text,
+                                      'example@gmail..com',
                                     ),
                                     createdTime: getCurrentTimestamp,
                                   ));
