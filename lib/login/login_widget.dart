@@ -828,7 +828,7 @@ class _LoginWidgetState extends State<LoginWidget>
                               context.goNamedAuth(
                                   'onboarding', context.mounted);
                             },
-                            text: 'Sign up',
+                            text: 'Sign Up',
                             options: FFButtonOptions(
                               width: double.infinity,
                               height: 70.0,
