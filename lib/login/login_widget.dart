@@ -1,4 +1,5 @@
 import '/auth/firebase_auth/auth_util.dart';
+import '/backend/api_requests/api_calls.dart';
 import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -786,73 +787,99 @@ class _LoginWidgetState extends State<LoginWidget>
                             ),
                           ),
                         if (_model.tabBarCurrentIndex == 0)
-                          FFButtonWidget(
-                            onPressed: () async {
-                              if (_model.formKey1.currentState == null ||
-                                  !_model.formKey1.currentState!.validate()) {
-                                return;
-                              }
-                              GoRouter.of(context).prepareAuthEvent();
-                              if (_model.signupPasswordTextController.text !=
-                                  _model.confirmpasswordTextController.text) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text(
-                                      'Passwords don\'t match!',
+                          Align(
+                            alignment: const AlignmentDirectional(0.0, 0.0),
+                            child: FFButtonWidget(
+                              onPressed: () async {
+                                if (_model.formKey1.currentState == null ||
+                                    !_model.formKey1.currentState!.validate()) {
+                                  return;
+                                }
+                                GoRouter.of(context).prepareAuthEvent();
+                                if (_model.signupPasswordTextController.text !=
+                                    _model.confirmpasswordTextController.text) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text(
+                                        'Passwords don\'t match!',
+                                      ),
                                     ),
+                                  );
+                                  return;
+                                }
+
+                                final user =
+                                    await authManager.createAccountWithEmail(
+                                  context,
+                                  _model.signupEmailTextController.text,
+                                  _model.signupPasswordTextController.text,
+                                );
+                                if (user == null) {
+                                  return;
+                                }
+
+                                await UsersRecord.collection
+                                    .doc(user.uid)
+                                    .update(createUsersRecordData(
+                                      email: valueOrDefault<String>(
+                                        _model.signupEmailTextController.text,
+                                        'example@gmail..com',
+                                      ),
+                                      createdTime: getCurrentTimestamp,
+                                    ));
+
+                                await SendEmailCall.call(
+                                  to: _model.signupEmailTextController.text,
+                                  subject: 'Welcome to the ToDo App',
+                                  text:
+                                      'This is an email confirming your account creation.',
+                                );
+
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      'Please check your email for a welcome message.',
+                                      style: TextStyle(
+                                        color: FlutterFlowTheme.of(context)
+                                            .primaryText,
+                                      ),
+                                    ),
+                                    duration: const Duration(milliseconds: 4000),
+                                    backgroundColor:
+                                        FlutterFlowTheme.of(context).secondary,
                                   ),
                                 );
-                                return;
-                              }
 
-                              final user =
-                                  await authManager.createAccountWithEmail(
-                                context,
-                                _model.signupEmailTextController.text,
-                                _model.signupPasswordTextController.text,
-                              );
-                              if (user == null) {
-                                return;
-                              }
-
-                              await UsersRecord.collection
-                                  .doc(user.uid)
-                                  .update(createUsersRecordData(
-                                    email: valueOrDefault<String>(
-                                      _model.signupEmailTextController.text,
-                                      'example@gmail..com',
+                                context.goNamedAuth(
+                                    'onboarding', context.mounted);
+                              },
+                              text: 'Sign Up',
+                              options: FFButtonOptions(
+                                width: double.infinity,
+                                height: 70.0,
+                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                    16.0, 0.0, 16.0, 0.0),
+                                iconPadding: const EdgeInsetsDirectional.fromSTEB(
+                                    0.0, 0.0, 0.0, 0.0),
+                                color: FlutterFlowTheme.of(context).primary,
+                                textStyle: FlutterFlowTheme.of(context)
+                                    .labelMedium
+                                    .override(
+                                      fontFamily: 'Inter',
+                                      color: FlutterFlowTheme.of(context)
+                                          .primaryText,
+                                      fontSize: 20.0,
+                                      letterSpacing: 0.0,
+                                      fontWeight: FontWeight.w500,
                                     ),
-                                    createdTime: getCurrentTimestamp,
-                                  ));
-
-                              context.goNamedAuth(
-                                  'onboarding', context.mounted);
-                            },
-                            text: 'Sign Up',
-                            options: FFButtonOptions(
-                              width: double.infinity,
-                              height: 70.0,
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  16.0, 0.0, 16.0, 0.0),
-                              iconPadding: const EdgeInsetsDirectional.fromSTEB(
-                                  0.0, 0.0, 0.0, 0.0),
-                              color: FlutterFlowTheme.of(context).primary,
-                              textStyle: FlutterFlowTheme.of(context)
-                                  .labelMedium
-                                  .override(
-                                    fontFamily: 'Inter',
-                                    color: FlutterFlowTheme.of(context)
-                                        .primaryText,
-                                    fontSize: 20.0,
-                                    letterSpacing: 0.0,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                              elevation: 0.0,
-                              borderSide: BorderSide(
-                                color: FlutterFlowTheme.of(context).primaryText,
-                                width: 1.0,
+                                elevation: 0.0,
+                                borderSide: BorderSide(
+                                  color:
+                                      FlutterFlowTheme.of(context).primaryText,
+                                  width: 1.0,
+                                ),
+                                borderRadius: BorderRadius.circular(24.0),
                               ),
-                              borderRadius: BorderRadius.circular(24.0),
                             ),
                           ),
                       ],

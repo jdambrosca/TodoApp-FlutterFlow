@@ -72,6 +72,17 @@ class _OnboardingWidgetState extends State<OnboardingWidget> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
+                          Text(
+                            'Please check email upon sign up completion for confirmation.',
+                            textAlign: TextAlign.center,
+                            style: FlutterFlowTheme.of(context)
+                                .bodyMedium
+                                .override(
+                                  fontFamily: 'Inter',
+                                  fontSize: 20.0,
+                                  letterSpacing: 0.0,
+                                ),
+                          ),
                           Row(
                             mainAxisSize: MainAxisSize.max,
                             children: [
